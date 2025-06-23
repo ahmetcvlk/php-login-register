@@ -14,4 +14,18 @@ class Dashboard extends CI_Controller {
         $data['user_name'] = $this->session->userdata('user_name');
         $this->load->view('dashboard_view', $data);
     }
+
+    public function send_message()
+    {
+        $message = $this->input->post('message');
+        $user_id = $this->session->userdata('user_id');
+
+        if ($message && $user_id) {
+            $this->load->model('Message_model');
+            $this->Message_model->insert_message($user_id, $message);
+            echo json_encode(['success' => true, 'msg' => 'Mesaj kaydedildi']);
+        } else {
+            echo json_encode(['success' => false, 'msg' => 'Geçersiz veri']);
+        }
+    }
 }
